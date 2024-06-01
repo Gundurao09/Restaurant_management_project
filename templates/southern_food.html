@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>South_Indian_Food</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        section {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 8px;
+            padding: 2em;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .item {
+            margin-bottom: 1.5em;
+            padding: 1.5em;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            color: #888;
+        }
+
+        .apply-btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 0.5em 1em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .apply-btn:hover {
+            background-color: #0056b3;
+        }
+        .q{
+            font-weight:700;
+        }
+        #quantity{
+            border-radius: 4px;
+            width: 40px;
+            font-weight:700;
+        }
+    </style>
+</head>
+<body>
+    <section action="/add">
+        <h1 style="text-align: center;">South Indian Food</h1>
+        {% if items %}
+            {% set items_list = items | list %}
+            {% for item in items_list %}
+                <div class="item">
+                    <h1 name = 'name'> Item Name: {{ item[0] }} </h1>
+                    <h1> Amount: {{ item[1] }}</h1>
+                    <form method="POST" action="/add">
+                        <label for="quantity" class='q'>Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" value="1" ><br>
+                        <input type="hidden" name="name" value="{{ item[0] }}">
+                        <button type="submit" class="apply-btn">Buy Now</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No items found.</p>
+        {% endif %}
+    </section>
+
+</body>
+</html>

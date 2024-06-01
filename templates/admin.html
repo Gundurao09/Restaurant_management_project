@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Item</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            background-color: #e0e0e0; /* Default background color */
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        body.dark-mode {
+            background-color: #1c1c1c; /* Dark mode background color */
+        }
+
+        header {
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+            background: linear-gradient(to right, #3498db, #6c5ce7);
+            width: 100%;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .dark-mode-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+            z-index: 1000;
+        }
+
+        .dark-mode-switch label {
+            margin-right: 8px;
+        }
+
+        #dark-mode-toggle {
+            appearance: none;
+            background: #f8f9fa;
+            width: 40px;
+            height: 20px;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        #dark-mode-toggle:before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            top: 1px;
+            left: 1px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        body.dark-mode #dark-mode-toggle:before {
+            transform: translateX(20px);
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: stretch;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .form-card {
+            background: linear-gradient(to bottom right, #ffffff, #f0f0f0);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            margin: 0 10px 20px 0; /* Adjust margin as needed */
+            width: 250px; /* Set your desired width */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .form-card.dark-mode {
+            background: linear-gradient(to bottom right, #2c2c2c, #262626);
+            color: #ffffff;
+        }
+
+        .form-card.dark-mode:hover {
+            transform: scale(1.03);
+        }
+
+        form {
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+        }
+
+        input:focus,
+        select:focus {
+            background-color: #edf2f7;
+            border-color: #3498db;
+        }
+
+        button {
+            background: linear-gradient(to right, #3498db, #6c5ce7);
+            color: #fff;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #6c5ce7, #3498db);
+        }
+
+        .display-card {
+            background: linear-gradient(to bottom right, #ffffff, #f0f0f0);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            margin: 0 20px 20px 0;
+            flex: 1 1 400px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .display-card.dark-mode {
+            background: linear-gradient(to bottom right, #2c2c2c, #262626);
+            color: #ffffff;
+        }
+
+        .display-card.dark-mode:hover {
+            transform: scale(1.03);
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 14px;
+            text-align: left;
+        }
+
+        th {
+            background: linear-gradient(to right, #3498db, #6c5ce7);
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Add Item</h1>
+    </header>
+
+    <div class="dark-mode-switch">
+        <label for="dark-mode-toggle">Dark Mode:</label>
+        <input type="checkbox" id="dark-mode-toggle">
+    </div>
+
+    <div class="container">
+        <div class="form-card">
+            <form action="{{ url_for('add_item') }}" method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="item_amount">Item Amount:</label>
+                <input type="number" step="0.01" id="item_amount" name="item_amount" required>
+
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="">Select the category</option>
+                    <option value="northern_food">Northern Food</option>
+                    <option value="southern_food">Southern Food</option>
+                    <option value="snacks">Snacks</option>
+                </select>
+
+                <button type="submit">Add Item</button>
+            </form>
+        </div>
+
+        <div class="display-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Item Amount</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if items %}
+                    {% set items_list = items | list %}
+                    {% for item in items_list %}
+                        <tr>
+                            <td>{{ item[0] }}</td>
+                            <td>{{ item[1] }}</td>
+                            <td>{{ item[2] }}</td>
+                        </tr>
+                    {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="3">No items found.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        darkModeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-mode', darkModeToggle.checked);
+        });
+    </script>
+</body>
+</html>

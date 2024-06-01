@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='welcome.css') }}">
+    <!-- {{ url_for('static', filename='welcome.css') }} -->
+</head>
+<body>
+
+    <header>
+        <h1>Hi {{ username }}, welcome!</h1>
+    </header>
+
+    <section>
+        <h1>Select the Food items</h1>
+        <form action='/submit' method="post">
+            <label>
+                <input type="radio" name="radio_option" value="northern_food"> North Indian 
+            </label>
+            <br>
+            <label>
+                <input type="radio" name="radio_option" value="southern_food"> South Indian
+            </label>
+            <br>
+            <label>
+                <input type="radio" name="radio_option" value="snacks"> Snacks
+            </label>
+            <br>
+            
+            <input type="submit" value="Submit">
+        </form>
+    </section>
+    <!-- onchange="openNewWindow(this.value);" -->
+</body>
+</html>
+<script>
+    function openNewWindow(selectedValue) {
+        var url;
+        if (selectedValue === "{{ url_for('northern_food')}}") {
+            url = "{{ url_for('northern_food')}}";
+        } else if (selectedValue === "{{ url_for('southern_food') }}") {
+            url = "{{ url_for('southern_food') }}";
+        }else if (selectedValue === "{{ url_for('snacks') }}") {
+            url = "{{ url_for('snacks') }}";
+        }
+
+        if (url) {
+            window.open(url, "_blank");
+        }
+    }
+  </script>
